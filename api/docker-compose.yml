@@ -1,0 +1,14 @@
+services:
+  flexbit-backend:
+    container_name: flexbit-backend
+    build: .
+    image: flexbit-backend:1.0.0
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - flexeet-network
+
+networks:
+  flexeet-network:
+    external: true
