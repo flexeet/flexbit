@@ -9,7 +9,10 @@ import compression from 'compression';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 5000;
+
+// ⬇️ WAJIB, karena pakai nginx reverse proxy
+app.set("trust proxy", 1);
 
 import connectDB from './config/db';
 import stockRoutes from './routes/stockRoutes';
