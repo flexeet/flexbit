@@ -3,12 +3,15 @@
 import { useState, FormEvent } from 'react';
 import Link from 'next/link';
 import { Spinner } from '@/components/ui/Spinner';
+import Image from 'next/image';
+import { useTheme } from 'next-themes';
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
     const [success, setSuccess] = useState('');
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const { resolvedTheme } = useTheme();
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
@@ -42,12 +45,14 @@ export default function ForgotPasswordPage() {
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             {/* Logo */}
             <Link href="/" className="mb-8 group flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold text-xl shadow-lg group-hover:scale-105 transition-transform">
-                    F
-                </div>
-                <span className="text-2xl font-bold text-foreground">
-                    FlexBit
-                </span>
+                <Image
+                    src={resolvedTheme === 'light' ? "/logo-dark.png" : "/logo-white.png"}
+                    alt="FlexBit Pro"
+                    width={120}
+                    height={32}
+                    className="h-16 w-auto object-contain"
+                    priority
+                />
             </Link>
 
             {/* Card */}
