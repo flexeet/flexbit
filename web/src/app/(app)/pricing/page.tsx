@@ -113,11 +113,11 @@ export default function PricingPage() {
                 (window as any).snap.pay(data.token, {
                     onSuccess: function (result: any) {
                         console.log('Payment success', result);
-                        window.location.href = `/payment/status?order_id=${result.order_id}`;
+                        window.location.href = process.env.NODE_ENV === 'production' ? `/dashboard` : `/payment/status?order_id=${result.order_id}`;
                     },
                     onPending: function (result: any) {
                         console.log('Payment pending', result);
-                        window.location.href = `/payment/status?order_id=${result.order_id}`;
+                        window.location.href = process.env.NODE_ENV === 'production' ? `/dashboard` : `/payment/status?order_id=${result.order_id}`;
                     },
                     onError: function (result: any) {
                         console.log('Payment error', result);
