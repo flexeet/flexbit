@@ -21,7 +21,7 @@ export default function BillingHistoryPage() {
     // Load Snap
     useEffect(() => {
         const script = document.createElement('script');
-        script.src = 'https://app.sandbox.midtrans.com/snap/snap.js';
+        script.src = process.env.NODE_ENV === 'production' ? 'https://app.midtrans.com/snap/snap.js' : 'https://app.sandbox.midtrans.com/snap/snap.js';
         script.setAttribute('data-client-key', process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY || '');
         document.body.appendChild(script);
         return () => { document.body.removeChild(script); }

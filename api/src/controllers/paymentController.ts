@@ -7,7 +7,7 @@ import crypto from 'crypto';
 
 // Initialize Snap client
 const snap = new midtransClient.Snap({
-    isProduction: false, // Sandbox for development
+    isProduction: process.env.NODE_ENV === 'production', // Sandbox for development
     serverKey: process.env.MIDTRANS_SERVER_KEY
 });
 
