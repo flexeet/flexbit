@@ -13,7 +13,7 @@ const snap = new midtransClient.Snap({
 
 // Price mapping
 const PRICING = {
-    [UserTier.PIONEER]: 5000, //199000
+    [UserTier.PIONEER]: 199000, //199000
     [UserTier.EARLY_ADOPTER]: 599000,
     [UserTier.GROWTH]: 999000,
     [UserTier.PRO]: 1999000,
