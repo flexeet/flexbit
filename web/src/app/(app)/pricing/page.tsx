@@ -9,7 +9,7 @@ const TIERS = [
     {
         id: 'pioneer',
         name: 'Pioneer',
-        price: 'Rp 199.000',
+        price: 'Rp 5.000', // 199000
         period: 'Lifetime',
         features: [
             'VQSG Score + Narrative System',
