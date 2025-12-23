@@ -131,9 +131,18 @@ export default function NarrativePage() {
                                                         )}
                                                     </Link>
                                                 ) : (
-                                                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground font-bold shadow-sm opacity-50 cursor-not-allowed shrink-0">
-                                                        {stock.ticker.substring(0, 2)}
+                                                    <div className="opacity-70 cursor-not-allowed">
+                                                        {stock.logo ? (
+                                                            <Image src={stock.logo} alt={stock.ticker} width={40} height={40} className="w-10 h-10 rounded-lg object-cover bg-secondary grayscale" />
+                                                        ) : (
+                                                            <div className="w-10 h-10 rounded-lg bg-primary flex items-center justify-center text-primary-foreground font-bold shadow-lg">
+                                                                {stock.ticker.substring(0, 2)}
+                                                            </div>
+                                                        )}
                                                     </div>
+                                                    // <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center text-muted-foreground font-bold shadow-sm opacity-50 cursor-not-allowed shrink-0">
+                                                    //     {stock.ticker.substring(0, 2)}
+                                                    // </div>
                                                 )}
                                                 <div>
                                                     {hasDetailAccess ? (
