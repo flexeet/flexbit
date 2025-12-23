@@ -137,10 +137,10 @@ export default function LoginPage() {
                 </div>
 
                 {/* Demo Info */}
-                <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-border/50 text-center">
+                {/* <div className="mt-6 p-4 bg-secondary/50 rounded-lg border border-border/50 text-center">
                     <p className="text-muted-foreground text-xs mb-1">Demo Account:</p>
                     <p className="text-foreground text-xs font-mono font-medium">testuser@flexbit.id / password123</p>
-                </div>
+                </div> */}
             </div>
 
             <p className="mt-8 text-muted-foreground text-xs">

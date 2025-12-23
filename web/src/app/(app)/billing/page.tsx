@@ -34,12 +34,15 @@ export default function BillingHistoryPage() {
                     window.location.href = `/payment/status?order_id=${orderId}`;
                 },
                 onPending: function (result: any) {
-                    window.location.href = `/payment/status?order_id=${orderId}`;
+                    return;
+                    // window.location.href = `/payment/status?order_id=${orderId}`;
                 },
                 onError: function (result: any) {
-                    window.location.href = `/payment/status?order_id=${orderId}`;
+                    return;
+                    // window.location.href = `/payment/status?order_id=${orderId}`;
                 },
                 onClose: function () {
+                    return;
                     // Do nothing
                 }
             });
