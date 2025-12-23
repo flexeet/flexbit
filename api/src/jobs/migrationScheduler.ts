@@ -2,9 +2,9 @@
  * Migration Scheduler
  * 
  * This file sets up a cron job to run the MySQL to MongoDB migration
- * automatically every day at 18:00 WIB (UTC+7).
+ * automatically every day at 19:00 WIB (UTC+7).
  * 
- * Cron Expression: '0 18 * * *' = At 18:00 every day
+ * Cron Expression: '0 19 * * *' = At 19:00 every day
  * Timezone: Asia/Jakarta (WIB)
  * 
  * Usage:
@@ -15,7 +15,7 @@ import cron from 'node-cron';
 import mysql from 'mysql2/promise';
 import Stock from '../models/Stock';
 
-// Schedule expression: At 18:00 every day (in WIB timezone)
+// Schedule expression: At 19:00 every day (in WIB timezone)
 const CRON_SCHEDULE = '0 19 * * *';
 const TIMEZONE = 'Asia/Jakarta';
 
