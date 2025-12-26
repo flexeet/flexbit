@@ -8,7 +8,7 @@ import Image from 'next/image';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { getMaxStocksDisplay, canAccessStockDetail, canExportData } from '@/utils/tierAccess';
 import { useRouter } from 'next/navigation';
-import { LayoutDashboard } from 'lucide-react';
+import { FileTextIcon, LayoutDashboard } from 'lucide-react';
 
 // Types - Updated to match new schema
 interface Stock {
@@ -389,16 +389,16 @@ export default function DashboardPage() {
                         {canExport && (
                             <button
                                 onClick={handleExport}
-                                className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium border border-border rounded-lg hover:bg-secondary/50 transition-colors"
+                                className="flex items-center cursor-pointer gap-2 px-3 py-1.5 text-sm font-medium border border-border rounded-lg hover:bg-secondary/50 transition-colors"
                             >
-                                <span>📥</span>
+                                <FileTextIcon className="w-4 h-4 text-primary" />
                                 <span className="hidden md:inline">Export</span>
                             </button>
                         )}
                         <button
                             disabled={page === 1}
                             onClick={() => setPage(p => p - 1)}
-                            className="px-3 py-1 rounded border border-border hover:bg-secondary disabled:opacity-50 transition-colors"
+                            className="px-3 py-1 cursor-pointer rounded border border-border hover:bg-secondary disabled:opacity-50 transition-colors"
                         >
                             Previous
                         </button>
@@ -406,7 +406,7 @@ export default function DashboardPage() {
                         <button
                             disabled={page === totalPages}
                             onClick={() => setPage(p => p + 1)}
-                            className="px-3 py-1 rounded bg-background border border-border hover:bg-secondary disabled:opacity-50 transition-colors"
+                            className="px-3 py-1 cursor-pointer rounded bg-background border border-border hover:bg-secondary disabled:opacity-50 transition-colors"
                         >
                             Next
                         </button>

@@ -174,7 +174,7 @@ export default function VQSGPage() {
                         <button
                             disabled={page === 1}
                             onClick={() => setPage(p => p - 1)}
-                            className="px-3 py-1 rounded border border-border hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
+                            className="px-3 py-1 cursor-pointer rounded border border-border hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
                         >
                             Previous
                         </button>
@@ -182,7 +182,7 @@ export default function VQSGPage() {
                         <button
                             disabled={page === totalPages}
                             onClick={() => setPage(p => p + 1)}
-                            className="px-3 py-1 rounded bg-background border border-border hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
+                            className="px-3 py-1 cursor-pointer rounded bg-background border border-border hover:bg-white disabled:opacity-50 disabled:hover:bg-transparent transition-colors"
                         >
                             Next
                         </button>
