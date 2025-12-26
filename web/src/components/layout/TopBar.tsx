@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import Link from 'next/link';
 import { useUIStore } from '@/providers/StoreProvider';
-import { Menu } from 'lucide-react';
+import { LogOutIcon, Menu, SearchIcon, UserIcon } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/ThemeToggle';
 
 // Debounce Hook
@@ -107,14 +107,16 @@ const TopBar = () => {
             {/* Search Bar */}
             <div className="flex-1 max-w-xl relative" ref={searchRef}>
                 <form onSubmit={handleSearch} className="relative">
-                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <SearchIcon className="w-4 h-4" />
+                    </span>
                     <input
                         type="text"
                         placeholder="Search stocks (e.g. BBCA, GOTO)..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={() => { if (results.length > 0) setShowResults(true); }}
-                        className="w-full bg-secondary/50 hover:bg-secondary focus:bg-secondary border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-0 transition-colors outline-none"
+                        className="w-full cursor-pointer bg-secondary/50 hover:bg-secondary focus:bg-secondary border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-0 transition-colors outline-none"
                     />
                     {isSearching && (
                         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-muted-foreground animate-pulse">
@@ -191,13 +193,15 @@ const TopBar = () => {
                                         onClick={() => setIsProfileOpen(false)}
                                         className="w-full text-left px-3 py-2 text-sm text-foreground hover:bg-secondary rounded-lg transition-colors flex items-center gap-2"
                                     >
-                                        <span>👤</span> Profile
+                                        <UserIcon className="w-4 h-4 text-primary" />
+                                        <span>Profile</span>
                                     </Link>
                                     <button
                                         onClick={handleLogout}
-                                        className="w-full text-left px-3 py-2 text-sm cursor-pointer text-red-500 hover:bg-red-500/10 rounded-lg transition-colors flex items-center gap-2"
+                                        className="w-full text-left px-3 py-2 text-sm cursor-pointer hover:text-red-500 hover:bg-red-500/10 rounded-lg transition-colors flex items-center gap-2"
                                     >
-                                        <span>🚪</span> Logout
+                                        <LogOutIcon className="w-4 h-4 text-red-500" />
+                                        <span>Logout</span>
                                     </button>
                                 </div>
                             </div>

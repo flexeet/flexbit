@@ -5,6 +5,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import Link from 'next/link';
 import Image from 'next/image';
+import { FileTextIcon, LockIcon, TrashIcon } from 'lucide-react';
 
 const fetchWatchlist = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/watchlist`, {
@@ -96,9 +97,10 @@ export default function WatchlistPage() {
                     {['growth', 'pro'].includes(user.subscription.tier) ? (
                         <button
                             onClick={handleExportWatchlist}
-                            className="bg-secondary hover:bg-secondary/80 text-foreground px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
+                            className="bg-secondary cursor-pointer hover:bg-secondary/80 hover:font-semibold text-foreground px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2"
                         >
-                            📄 Export CSV
+                            <FileTextIcon className="w-4 h-4 text-primary" />
+                            Export CSV
                         </button>
                     ) : (
                         <button
@@ -106,15 +108,16 @@ export default function WatchlistPage() {
                             title="Upgrade to Growth to export data"
                             className="bg-muted text-muted-foreground px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 cursor-not-allowed opacity-70"
                         >
-                            🔒 Export CSV
+                            <LockIcon className="w-4 h-4 text-primary" />
+                            Export CSV
                         </button>
                     )}
 
-                    {user.subscription.tier === 'pioneer' && (
+                    {/* {user.subscription.tier === 'pioneer' && (
                         <div className="hidden md:block bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 px-4 py-2 rounded-lg text-sm">
                             <span>🚀 Upgrade for Alerts</span>
                         </div>
-                    )}
+                    )} */}
                 </div>
             </div>
 
@@ -168,9 +171,9 @@ export default function WatchlistPage() {
                                 <button
                                     disabled={removeMutation.isPending}
                                     onClick={() => removeMutation.mutate(item.ticker)}
-                                    className="p-2 rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors"
+                                    className="p-2 rounded bg-red-500/10 hover:bg-red-500/20 text-red-500 transition-colors cursor-pointer"
                                 >
-                                    🗑️
+                                    <TrashIcon className="w-4 h-4" />
                                 </button>
                             </div>
                         </div>

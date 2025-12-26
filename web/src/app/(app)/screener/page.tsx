@@ -129,7 +129,7 @@ export default function ScreenerPage() {
                             <button
                                 key={q}
                                 onClick={() => setParams('quality', activeQuality === q ? '' : q)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${activeQuality === q
+                                className={`px-4 py-2 rounded-full cursor-pointer text-sm font-medium border transition-all ${activeQuality === q
                                     ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
                                     : 'bg-card hover:bg-secondary border-border'
                                     }`}
@@ -147,7 +147,7 @@ export default function ScreenerPage() {
                             <button
                                 key={t}
                                 onClick={() => setParams('timing', activeTiming === t ? '' : t)}
-                                className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${activeTiming === t
+                                className={`px-4 py-2 rounded-full cursor-pointer text-sm font-medium border transition-all ${activeTiming === t
                                     ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
                                     : 'bg-card hover:bg-secondary border-border'
                                     }`}
@@ -166,7 +166,7 @@ export default function ScreenerPage() {
                     {(activeQuality || activeTiming || activeConflict) && (
                         <button
                             onClick={() => router.push('/screener')}
-                            className="text-xs text-red-500 hover:text-red-400 font-medium"
+                            className="text-xs text-red-500 hover:text-red-400 bg-red-50 hover:bg-red-100 px-2 py-1 rounded font-medium cursor-pointer transition-colors"
                         >
                             Reset Filter {activeConflict && '(Termasuk Konflik)'}
                         </button>
@@ -269,7 +269,7 @@ export default function ScreenerPage() {
                         <button
                             disabled={page === 1}
                             onClick={() => setParams('page', String(page - 1))}
-                            className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-secondary disabled:opacity-50 transition-colors"
+                            className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-secondary disabled:opacity-50 transition-colors cursor-pointer"
                         >
                             Previous
                         </button>
@@ -277,7 +277,7 @@ export default function ScreenerPage() {
                         <button
                             disabled={page === totalPages}
                             onClick={() => setParams('page', String(page + 1))}
-                            className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-secondary disabled:opacity-50 transition-colors"
+                            className="px-4 py-2 text-sm font-medium border rounded-lg hover:bg-secondary disabled:opacity-50 transition-colors cursor-pointer"
                         >
                             Next
                         </button>

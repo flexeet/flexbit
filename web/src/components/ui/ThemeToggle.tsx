@@ -25,7 +25,7 @@ export function ThemeToggle() {
     return (
         <button
             onClick={toggleTheme}
-            className="w-9 h-9 flex items-center justify-center rounded-full bg-secondary hover:bg-secondary/80 transition-colors text-muted-foreground hover:text-foreground"
+            className="w-9 h-9 flex cursor-pointer items-center justify-center rounded-full bg-secondary hover:bg-secondary/80 transition-colors text-muted-foreground hover:text-foreground"
             title={`Current theme: ${theme}`}
         >
             {theme === 'system' ? (

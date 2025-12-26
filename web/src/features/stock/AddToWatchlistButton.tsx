@@ -1,6 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Star, StarIcon } from 'lucide-react';
 import { useState } from 'react';
 
 interface AddToWatchlistButtonProps {
@@ -53,7 +54,7 @@ export default function AddToWatchlistButton({ ticker, compact = false }: AddToW
                 disabled={mutation.isPending}
                 className={`${compact ? 'p-2' : 'px-4 py-2'} rounded-lg bg-secondary hover:bg-secondary/80 text-secondary-foreground font-medium transition-colors flex items-center gap-2`}
             >
-                {mutation.isPending ? '...' : '⭐'}
+                {mutation.isPending ? '...' : <StarIcon className="w-4 h-4 cursor-pointer hover:text-yellow-500" />}
                 {!compact && <span>Watchlist</span>}
             </button>
 

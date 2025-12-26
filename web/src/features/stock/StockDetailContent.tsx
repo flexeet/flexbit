@@ -65,7 +65,7 @@ export default function StockDetailContent({ ticker }: StockDetailContentProps) 
     const TabButton = ({ name }: { name: string }) => (
         <button
             onClick={() => setActiveTab(name)}
-            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors ${activeTab === name
+            className={`px-6 py-3 text-sm font-medium border-b-2 transition-colors cursor-pointer ${activeTab === name
                 ? 'border-primary text-primary'
                 : 'border-transparent text-muted-foreground hover:text-foreground'
                 }`}

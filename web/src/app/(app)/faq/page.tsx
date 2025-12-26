@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from '@tanstack/react-query';
+import { HelpCircle, MailIcon, SearchIcon } from 'lucide-react';
 import { useState } from 'react';
 
 interface Faq {
@@ -74,7 +75,8 @@ export default function FaqPage() {
             {/* Header */}
             <div>
                 <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                    ❓ Frequently Asked Questions
+                    <HelpCircle className="w-6 h-6 text-primary" />
+                    Frequently Asked Questions
                 </h1>
                 <p className="text-muted-foreground text-sm mt-1">Temukan jawaban untuk pertanyaan yang sering diajukan</p>
             </div>
@@ -86,9 +88,11 @@ export default function FaqPage() {
                     placeholder="Cari pertanyaan..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-3 pl-12 bg-card border border-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/50 transition-all"
+                    className="w-full px-4 py-3 pl-12 bg-card cursor-pointer border border-border rounded-xl text-sm outline-none focus:ring-2 focus:ring-primary/50 transition-all"
                 />
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">🔍</span>
+                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <SearchIcon className="w-4 h-4 text-primary" />
+                </span>
             </div>
 
             {/* Stats */}
@@ -120,7 +124,7 @@ export default function FaqPage() {
                             {/* Question Header */}
                             <button
                                 onClick={() => setOpenId(openId === faq._id ? null : faq._id)}
-                                className="w-full px-5 py-4 flex items-start justify-between gap-4 text-left"
+                                className="w-full px-5 py-4 flex items-start justify-between gap-4 text-left cursor-pointer"
                             >
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 flex-wrap mb-1">
@@ -168,7 +172,8 @@ export default function FaqPage() {
                     href="mailto:flexeet.app@gmail.com"
                     className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg text-sm font-medium hover:opacity-90 transition-opacity"
                 >
-                    ✉️ Hubungi Support
+                    <MailIcon className="w-4 h-4" />
+                    Hubungi Support
                 </a>
             </div>
         </div>

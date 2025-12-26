@@ -122,7 +122,7 @@ function ResetPasswordForm() {
                 <button
                     type="submit"
                     disabled={loading || !!success}
-                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                    className="w-full bg-primary cursor-pointer hover:bg-primary/90 text-primary-foreground font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                 >
                     {loading ? (
                         <>
