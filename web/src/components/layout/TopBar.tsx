@@ -135,7 +135,7 @@ const TopBar = () => {
                                     className="flex items-center justify-between px-4 py-3 hover:bg-secondary/50 transition-colors border-b border-border last:border-0"
                                 >
                                     <div>
-                                        <div className="font-bold text-sm text-blue-400">{stock.ticker}</div>
+                                        <div className="font-bold text-sm text-primary">{stock.ticker}</div>
                                         <div className="text-xs text-muted-foreground truncate max-w-[200px]">{stock.companyName}</div>
                                     </div>
                                     <div className="text-right">
@@ -210,3 +210,4 @@ const TopBar = () => {
 };
 
 export default TopBar;
+

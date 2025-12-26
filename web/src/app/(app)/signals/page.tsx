@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { getMaxStocksDisplay, canAccessStockDetail } from '@/utils/tierAccess';
+import { LineChart } from 'lucide-react';
 
 const fetchStocks = async (page: number) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stocks?page=${page}&limit=10`);
@@ -60,7 +61,8 @@ export default function SignalsPage() {
             {/* Header */}
             <div>
                 <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                    📈 FlexTech Signal
+                    <LineChart className="h-6 w-6 text-primary" />
+                    FlexTech Signal
                 </h1>
                 <p className="text-muted-foreground text-sm">Trading signals, entry points, targets & stop loss</p>
             </div>

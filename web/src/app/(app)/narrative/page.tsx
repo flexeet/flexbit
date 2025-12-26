@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { getMaxStocksDisplay, canAccessStockDetail } from '@/utils/tierAccess';
+import { Target } from 'lucide-react';
 
 const fetchStocks = async (page: number) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stocks?page=${page}&limit=10`);
@@ -85,7 +86,7 @@ export default function NarrativePage() {
             {/* Header */}
             <div>
                 <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                    🎯 Narrative View
+                    <Target className="h-6 w-6 text-primary" /> Narrative View
                     <span className="bg-purple-600 text-white text-[10px] px-1.5 py-0.5 rounded font-bold uppercase tracking-wider">NEW V3.5</span>
                 </h1>
                 <p className="text-muted-foreground text-sm mt-1">2 Dimensi: Kualitas Bisnis vs Timing Harga</p>

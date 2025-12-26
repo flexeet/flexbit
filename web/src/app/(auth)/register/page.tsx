@@ -69,15 +69,20 @@ export default function RegisterPage() {
     return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             {/* Logo */}
-            <Link href="/" className="mb-8 group flex items-center gap-2">
+            <Link href="/" className="mb-8 group flex items-center gap-1 hover:opacity-90 transition-opacity">
                 <Image
-                    src={resolvedTheme === 'light' ? "/logo-dark.png" : "/logo-white.png"}
+                    src={resolvedTheme === 'light' ? "/logo_flexbit_light.png" : "/logo_flexbit_dark.png"}
                     alt="FlexBit Pro"
-                    width={120}
-                    height={32}
-                    className="h-16 w-auto object-contain"
+                    width={60}
+                    height={60}
+                    className="h-14 w-auto object-contain"
                     priority
                 />
+                <div className="flex items-center">
+                    <span className="text-3xl font-extrabold bg-gradient-to-r from-[#8B3D88] to-indigo-600 bg-clip-text text-transparent tracking-tight">
+                        FlexBit Pro
+                    </span>
+                </div>
             </Link>
 
             {/* Card */}
@@ -100,7 +105,7 @@ export default function RegisterPage() {
                             {...register("fullName")}
                             type="text"
                             placeholder="John Doe"
-                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.fullName ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-primary focus:border-primary'}`}
+                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.fullName ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-[#8B3D88] focus:border-[#8B3D88]'}`}
                         />
                         {errors.fullName && <p className="text-xs text-destructive">{errors.fullName.message}</p>}
                     </div>
@@ -110,7 +115,7 @@ export default function RegisterPage() {
                             {...register("phoneNumber")}
                             type="text"
                             placeholder="628..."
-                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.phoneNumber ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-primary focus:border-primary'}`}
+                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.phoneNumber ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-[#8B3D88] focus:border-[#8B3D88]'}`}
                         />
                         <p className="text-xs text-muted-foreground">Format: 628...</p>
                         {errors.phoneNumber && <p className="text-xs text-destructive">{errors.phoneNumber.message}</p>}
@@ -121,7 +126,7 @@ export default function RegisterPage() {
                             {...register("email")}
                             type="email"
                             placeholder="you@example.com"
-                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.email ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-primary focus:border-primary'}`}
+                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.email ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-[#8B3D88] focus:border-[#8B3D88]'}`}
                         />
                         {errors.email && <p className="text-xs text-destructive">{errors.email.message}</p>}
                     </div>
@@ -131,18 +136,18 @@ export default function RegisterPage() {
                             {...register("password")}
                             type="password"
                             placeholder="••••••••"
-                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.password ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-primary focus:border-primary'}`}
+                            className={`w-full bg-secondary border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground outline-none transition-all ${errors.password ? 'border-destructive' : 'border-border focus:ring-2 focus:ring-[#8B3D88] focus:border-[#8B3D88]'}`}
                         />
                         {errors.password && <p className="text-xs text-destructive">{errors.password.message}</p>}
                     </div>
                     <button
                         type="submit"
                         disabled={mutation.isPending || isSubmitting}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full bg-[#8B3D88] hover:opacity-90 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {mutation.isPending ? (
                             <>
-                                <Spinner color="text-primary-foreground" />
+                                <Spinner color="text-white" />
                                 <span>Creating Account...</span>
                             </>
                         ) : (
@@ -153,7 +158,7 @@ export default function RegisterPage() {
 
                 <div className="mt-6 text-center text-sm text-muted-foreground">
                     Already have an account?{' '}
-                    <Link href="/login" className="text-primary hover:underline font-medium transition-colors">
+                    <Link href="/login" className="text-[#8B3D88] hover:underline font-medium transition-colors">
                         Sign In
                     </Link>
                 </div>

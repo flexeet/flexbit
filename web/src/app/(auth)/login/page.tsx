@@ -61,15 +61,20 @@ export default function LoginPage() {
     return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             {/* Logo */}
-            <Link href="/" className="mb-8 group flex items-center gap-2">
+            <Link href="/" className="mb-8 group flex items-center gap-1 hover:opacity-90 transition-opacity">
                 <Image
-                    src={resolvedTheme === 'light' ? "/logo-dark.png" : "/logo-white.png"}
+                    src={resolvedTheme === 'light' ? "/logo_flexbit_light.png" : "/logo_flexbit_dark.png"}
                     alt="FlexBit Pro"
-                    width={120}
-                    height={32}
-                    className="h-16 w-auto object-contain"
+                    width={60}
+                    height={60}
+                    className="h-14 w-auto object-contain"
                     priority
                 />
+                <div className="flex items-center">
+                    <span className="text-3xl font-extrabold bg-gradient-to-r from-[#8B3D88] to-indigo-600 bg-clip-text text-transparent tracking-tight">
+                        FlexBit Pro
+                    </span>
+                </div>
             </Link>
 
             {/* Card */}
@@ -102,13 +107,13 @@ export default function LoginPage() {
                         <input
                             type="password"
                             placeholder="••••••••"
-                            className="w-full bg-secondary border border-border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary focus:border-primary outline-none transition-all"
+                            className="w-full bg-secondary border border-border rounded-lg px-4 py-2 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-[#8B3D88] focus:border-[#8B3D88] outline-none transition-all"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                         <div className="text-right">
-                            <Link href="/forgot-password" className="text-xs text-primary hover:underline transition-colors">
+                            <Link href="/forgot-password" className="text-xs text-[#8B3D88] hover:underline transition-colors">
                                 Forgot Password?
                             </Link>
                         </div>
@@ -116,11 +121,11 @@ export default function LoginPage() {
                     <button
                         type="submit"
                         disabled={mutation.isPending}
-                        className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
+                        className="w-full bg-[#8B3D88] hover:opacity-90 text-white font-bold py-3 rounded-lg transition-all disabled:opacity-50 flex items-center justify-center gap-2"
                     >
                         {mutation.isPending ? (
                             <>
-                                <Spinner color="text-primary-foreground" />
+                                <Spinner color="text-white" />
                                 <span>Signing in...</span>
                             </>
                         ) : (

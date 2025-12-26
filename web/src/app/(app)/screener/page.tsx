@@ -148,7 +148,7 @@ export default function ScreenerPage() {
                                 key={t}
                                 onClick={() => setParams('timing', activeTiming === t ? '' : t)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium border transition-all ${activeTiming === t
-                                    ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/20'
+                                    ? 'bg-primary text-primary-foreground border-primary shadow-lg shadow-primary/20'
                                     : 'bg-card hover:bg-secondary border-border'
                                     }`}
                             >

@@ -3,6 +3,7 @@
 import { useState, useEffect, FormEvent } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useQueryClient } from '@tanstack/react-query';
+import { User } from 'lucide-react';
 
 export default function ProfilePage() {
     const { data: user, isLoading } = useAuth();
@@ -109,7 +110,9 @@ export default function ProfilePage() {
         <div className="max-w-2xl mx-auto space-y-8">
             {/* Header */}
             <div>
-                <h1 className="text-xl md:text-2xl font-bold">👤 My Profile</h1>
+                <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <User className="w-7 h-7 text-primary" /> My Profile
+                </h1>
                 <p className="text-muted-foreground text-sm mt-1">Manage your account details</p>
             </div>
 
@@ -127,7 +130,7 @@ export default function ProfilePage() {
                     </div>
                     <div>
                         <span className="text-muted-foreground">Tier</span>
-                        <p className="font-bold uppercase text-blue-500">{user?.subscription?.tier}</p>
+                        <p className="font-bold uppercase text-primary">{user?.subscription?.tier}</p>
                     </div>
                     <div>
                         <span className="text-muted-foreground">Status</span>

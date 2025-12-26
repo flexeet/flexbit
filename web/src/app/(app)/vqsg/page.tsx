@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { getMaxStocksDisplay, canAccessStockDetail } from '@/utils/tierAccess';
+import { BarChart4 } from 'lucide-react';
 
 const fetchStocks = async (page: number) => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/stocks?page=${page}&limit=10`);
@@ -54,7 +55,8 @@ export default function VQSGPage() {
             {/* Header */}
             <div>
                 <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                    📊 VQSG Analysis
+                    <BarChart4 className="h-6 w-6 text-primary" />
+                    VQSG Analysis
                 </h1>
                 <p className="text-muted-foreground text-sm mt-1">Breakdown skor Valuation, Quality, Safety, Growth</p>
             </div>

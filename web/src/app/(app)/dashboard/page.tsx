@@ -8,6 +8,7 @@ import Image from 'next/image';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { getMaxStocksDisplay, canAccessStockDetail, canExportData } from '@/utils/tierAccess';
 import { useRouter } from 'next/navigation';
+import { LayoutDashboard } from 'lucide-react';
 
 // Types - Updated to match new schema
 interface Stock {
@@ -214,7 +215,7 @@ export default function DashboardPage() {
             {/* Header */}
             <div>
                 <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
-                    🏠 Dashboard
+                    <LayoutDashboard className="h-6 w-6 text-primary" /> Dashboard
                 </h1>
                 <p className="text-muted-foreground text-sm mt-1">Overview semua saham dengan Narrative System V3.5</p>
             </div>
