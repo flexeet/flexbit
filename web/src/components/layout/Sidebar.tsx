@@ -18,7 +18,9 @@ import {
     Ban,
     AlertTriangle,
     CheckCircle2,
-    HelpCircle
+    HelpCircle,
+    BookOpen,
+    Newspaper
 } from 'lucide-react';
 import { useUIStore } from '@/providers/StoreProvider';
 import { canUseWatchlist } from '@/utils/tierAccess';
@@ -68,7 +70,6 @@ const Sidebar = () => {
 
     // Format Number Helper
     const fmt = (n: number) => n >= 1000 ? `${(n / 1000).toFixed(1)}k` : n;
-    console.log(isActive);
 
     return (
         <>
@@ -102,9 +103,9 @@ const Sidebar = () => {
                         </div>
                     </Link>
                     {/* Close Button Mobile */}
-                    <button onClick={closeSidebar} className="md:hidden text-muted-foreground">
+                    {/* <button onClick={closeSidebar} className="md:hidden text-muted-foreground">
                         <X className="w-5 h-5" />
-                    </button>
+                    </button> */}
                 </div>
 
                 <nav className="flex-1 px-4 space-y-6 overflow-y-auto">
@@ -207,6 +208,16 @@ const Sidebar = () => {
                     <div>
                         <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-2 px-2">MORE</div>
                         <div className="space-y-1">
+                            <Link href="/news" onClick={closeSidebar} className={`flex justify-between items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/news') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'}`}>
+                                <div className="flex items-center gap-3">
+                                    <Newspaper className="w-4 h-4" /> News
+                                </div>
+                            </Link>
+                            <Link href="/wiki" onClick={closeSidebar} className={`flex justify-between items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/wiki') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'}`}>
+                                <div className="flex items-center gap-3">
+                                    <BookOpen className="w-4 h-4" /> Wiki
+                                </div>
+                            </Link>
                             <Link href="/faq" onClick={closeSidebar} className={`flex justify-between items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors ${isActive('/faq') ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-secondary/50 hover:text-foreground'}`}>
                                 <div className="flex items-center gap-3">
                                     <HelpCircle className="w-4 h-4" /> FAQ

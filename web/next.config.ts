@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'assets.stockbit.com',
         pathname: '/logos/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'flxr2.com',
+        pathname: '/flexbit/**',
+      }
     ],
   },
 };

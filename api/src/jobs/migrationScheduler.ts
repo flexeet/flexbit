@@ -14,6 +14,7 @@
 import cron from 'node-cron';
 import mysql from 'mysql2/promise';
 import Stock from '../models/Stock';
+import { migrateNews } from '../scripts/migrateFromNews';
 
 // Schedule expression: At 19:00 every day (in WIB timezone)
 const CRON_SCHEDULE = '0 19 * * *';
@@ -37,6 +38,7 @@ function transformToMongoDB(row: any) {
         sector: row.sector,
         industry: row.industry,
         logo: row.logo,
+        stockbit_url: row.stockbit_url,
         isFinancialSector: row.is_financial_sector === 1,
         financials: {
             dividendYield: row.dividend_yield ? parseFloat(row.dividend_yield) : null,
@@ -140,7 +142,7 @@ async function runMigration() {
 
         // Fetch all stocks from MySQL
         console.log('📊 Fetching stocks from MySQL...');
-        const [rows] = await mysqlConnection.execute('SELECT * FROM daily_fundamentals_update');
+        const [rows] = await mysqlConnection.execute('SELECT * FROM daily_fundamentals_update_link');
         const stocks = rows as any[];
         console.log(`✅ Found ${stocks.length} stocks in MySQL\n`);
 
@@ -203,21 +205,41 @@ export function initMigrationScheduler() {
     }
 
     console.log('📅 Initializing migration scheduler...');
-    console.log(`   Schedule: ${CRON_SCHEDULE} (18:00 WIB daily)`);
-    console.log(`   Timezone: ${TIMEZONE}`);
 
+    // Existing stock migration (19:00 WIB)
     scheduledTask = cron.schedule(
         CRON_SCHEDULE,
         async () => {
             console.log('\n' + '='.repeat(60));
-            console.log('🕕 SCHEDULED MIGRATION TRIGGERED');
+            console.log('🕕 SCHEDULED MIGRATION TRIGGERED (STOCKS)');
             console.log('='.repeat(60));
 
             try {
                 const result = await runMigration();
-                console.log(`\n✅ Scheduled migration completed: ${result.success}/${result.total} stocks updated`);
+                console.log(`\n✅ Scheduled stock migration completed: ${result.success}/${result.total} stocks updated`);
             } catch (error) {
-                console.error('\n❌ Scheduled migration failed:', error);
+                console.error('\n❌ Scheduled stock migration failed:', error);
+            }
+        },
+        {
+            timezone: TIMEZONE
+        }
+    );
+
+    // News migration (09:00 WIB) - Replaces Wiki automatic schedule
+    const NEWS_CRON_SCHEDULE = '0 9 * * *';
+    cron.schedule(
+        NEWS_CRON_SCHEDULE,
+        async () => {
+            console.log('\n' + '='.repeat(60));
+            console.log('🕘 SCHEDULED MIGRATION TRIGGERED (NEWS)');
+            console.log('='.repeat(60));
+
+            try {
+                const result = await migrateNews();
+                console.log(`\n✅ Scheduled news migration completed: ${result?.success ?? 0} news items updated`);
+            } catch (error) {
+                console.error('\n❌ Scheduled news migration failed:', error);
             }
         },
         {
@@ -226,7 +248,8 @@ export function initMigrationScheduler() {
     );
 
     console.log('✅ Migration scheduler initialized successfully');
-    console.log(`   Next run: 19:00 WIB\n`);
+    console.log(`   Next Stock run: 19:00 WIB`);
+    console.log(`   Next News run: 09:00 WIB\n`);
 }
 
 /**

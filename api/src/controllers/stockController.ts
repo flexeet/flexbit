@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import Stock from '../models/Stock';
-import { stockQuerySchema, tickerParamSchema, screenerQuerySchema } from '../schemas/stock';
+import { stockQuerySchema } from '../schemas/stock';
 
 // @desc    Get all stocks with pagination and filtering
 // @route   GET /api/stocks
@@ -58,7 +58,7 @@ export const getStocks = async (req: Request, res: Response) => {
 
         const count = await Stock.countDocuments(query);
         const stocks = await Stock.find(query)
-            .select('ticker logo companyName sector analysis.flexbitScore analysis.businessQuality analysis.timingLabel analysis.timingScore analysis.conflict analysis.investorProfile analysis.stockProfile.emoji technical.lastPrice technical.priceChangePercent technical.trend technical.trendStrength technical.signals')
+            .select('ticker logo stockbit_url companyName sector analysis.flexbitScore analysis.businessQuality analysis.timingLabel analysis.timingScore analysis.conflict analysis.investorProfile analysis.stockProfile.emoji technical.lastPrice technical.priceChangePercent technical.trend technical.trendStrength technical.signals')
             .sort(sortOption)
             .limit(limit)
             .skip(limit * (page - 1))

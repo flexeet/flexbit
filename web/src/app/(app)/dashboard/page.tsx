@@ -17,6 +17,7 @@ interface Stock {
     sector: string;
     industry?: string;
     logo?: string;
+    stockbit_url?: string;
     analysis: {
         flexbitScore: number;
         businessQuality: string;
@@ -248,7 +249,7 @@ export default function DashboardPage() {
                         <button
                             key={f}
                             onClick={() => { setFilter(f); setPage(1); }}
-                            className={`px-4 py-1.5 rounded-full text-xs font-medium transition-colors whitespace-nowrap border ${filter === f
+                            className={`px-4 py-1.5 cursor-pointer rounded-full text-xs font-medium transition-colors whitespace-nowrap border ${filter === f
                                 ? 'bg-primary border-primary text-primary-foreground'
                                 : 'bg-background border-border text-muted-foreground hover:border-primary hover:text-foreground'
                                 }`}
@@ -262,7 +263,7 @@ export default function DashboardPage() {
                     <select
                         value={sort}
                         onChange={(e) => setSort(e.target.value)}
-                        className="bg-card border border-border rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary"
+                        className="bg-card cursor-pointer border border-border rounded-lg px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary"
                     >
                         <option value="Score">Score ↓</option>
                         <option value="Ticker">Ticker A-Z</option>

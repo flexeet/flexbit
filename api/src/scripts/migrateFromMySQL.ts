@@ -38,6 +38,7 @@ function transformToMongoDB(row: any) {
         sector: row.sector,
         industry: row.industry,
         logo: row.logo,
+        stockbit_url: row.stockbit_url,
         isFinancialSector: row.is_financial_sector === 1,
         financials: {
             dividendYield: row.dividend_yield ? parseFloat(row.dividend_yield) : null,
@@ -153,7 +154,7 @@ export async function runMigration(useExistingConnection = false) {
 
         // Fetch all stocks from MySQL
         console.log('📊 Fetching stocks from MySQL...');
-        const [rows] = await mysqlConnection.execute('SELECT * FROM daily_fundamentals_update');
+        const [rows] = await mysqlConnection.execute('SELECT * FROM daily_fundamentals_update_link');
         const stocks = rows as any[];
         console.log(`✅ Found ${stocks.length} stocks in MySQL\n`);
 

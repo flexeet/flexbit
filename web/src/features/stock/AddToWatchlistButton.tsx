@@ -1,8 +1,9 @@
 "use client";
 
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Star, StarIcon } from 'lucide-react';
-import { useState } from 'react';
+import { StarIcon } from 'lucide-react';
+import { useTheme } from 'next-themes';
+import { toast } from 'react-toastify';
 
 interface AddToWatchlistButtonProps {
     ticker: string;
@@ -25,19 +26,34 @@ const addToWatchlist = async (ticker: string) => {
 };
 
 export default function AddToWatchlistButton({ ticker, compact = false }: AddToWatchlistButtonProps) {
-    const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
     const queryClient = useQueryClient();
+    const theme = useTheme();
+    console.log(theme.theme);
 
     const mutation = useMutation({
         mutationFn: addToWatchlist,
         onSuccess: () => {
-            setMessage({ type: 'success', text: 'Added to Watchlist' });
+            toast.success(`${ticker} added to Watchlist`, {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme.theme == "light" ? "light" : "dark",
+            });
             queryClient.invalidateQueries({ queryKey: ['watchlist'] });
-            setTimeout(() => setMessage(null), 3000);
         },
         onError: (err: any) => {
-            setMessage({ type: 'error', text: err.message });
-            setTimeout(() => setMessage(null), 5000);
+            toast.error(err.message || 'Failed to add to watchlist', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme.theme == "light" ? "light" : "dark",
+            });
         }
     });
 
@@ -57,14 +73,6 @@ export default function AddToWatchlistButton({ ticker, compact = false }: AddToW
                 {mutation.isPending ? '...' : <StarIcon className="w-4 h-4 cursor-pointer hover:text-yellow-500" />}
                 {!compact && <span>Watchlist</span>}
             </button>
-
-            {/* Toast Notification */}
-            {message && (
-                <div className={`absolute top-4 right-4 w-max px-3 py-2 rounded text-xs font-bold z-50 shadow-lg ${message.type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-                    }`}>
-                    {message.text}
-                </div>
-            )}
         </div>
     );
 }

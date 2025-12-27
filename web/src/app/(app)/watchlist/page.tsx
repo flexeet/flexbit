@@ -5,7 +5,9 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import Link from 'next/link';
 import Image from 'next/image';
-import { FileTextIcon, LockIcon, TrashIcon } from 'lucide-react';
+import { FileTextIcon, LockIcon, StarIcon, TrashIcon } from 'lucide-react';
+import { toast } from 'react-toastify';
+import { useTheme } from 'next-themes';
 
 const fetchWatchlist = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/watchlist`, {
@@ -29,6 +31,7 @@ const removeFromWatchlist = async (ticker: string) => {
 export default function WatchlistPage() {
     const { data: user, isLoading: authLoading } = useAuth();
     const queryClient = useQueryClient();
+    const theme = useTheme();
 
     const { data: watchlist, isLoading: listLoading } = useQuery({
         queryKey: ['watchlist'],
@@ -39,6 +42,15 @@ export default function WatchlistPage() {
     const removeMutation = useMutation({
         mutationFn: removeFromWatchlist,
         onSuccess: () => {
+            toast.success('Stock removed from watchlist', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme.theme == "light" ? "light" : "dark",
+            });
             queryClient.invalidateQueries({ queryKey: ['watchlist'] });
         }
     });
@@ -123,7 +135,7 @@ export default function WatchlistPage() {
 
             {watchlist?.stocks?.length === 0 ? (
                 <div className="bg-card border border-border rounded-xl p-12 text-center">
-                    <div className="text-4xl mb-4">⭐</div>
+                    <StarIcon className="w-12 h-12 text-primary mb-4 mx-auto" />
                     <h3 className="text-lg font-bold mb-2">Watchlist Kosong</h3>
                     <p className="text-muted-foreground mb-6">Mulai tambahkan saham dari Dashboard atau Screener.</p>
                     <Link href="/dashboard" className="text-primary hover:underline">

@@ -90,13 +90,20 @@ export default function StockDetailContent({ ticker }: StockDetailContentProps) 
                     <div className="flex justify-between items-start gap-4">
                         <div className="flex items-start gap-3 flex-1 min-w-0">
                             {stock.logo ? (
-                                <Image
-                                    src={stock.logo}
-                                    alt={stock.ticker}
-                                    width={48}
-                                    height={48}
-                                    className="w-10 h-10 md:w-12 md:h-12 rounded-lg object-cover bg-secondary shrink-0"
-                                />
+                                <div className="relative group flex flex-col items-center">
+                                    <div className="absolute -left-1 top-full hidden group-hover:block bg-black text-white text-xs py-1 px-2 rounded whitespace-nowrap">
+                                        Lihat di Stockbit
+                                    </div>
+
+                                    <Image
+                                        src={stock.logo}
+                                        alt={stock.ticker}
+                                        width={48}
+                                        height={48}
+                                        className="w-10 h-10 cursor-pointer hover:sepia-50 transition-colors md:w-12 md:h-12 rounded-lg object-cover bg-secondary shrink-0"
+                                        onClick={() => window.open(stock.stockbit_url, '_blank')}
+                                    />
+                                </div>
                             ) : (
                                 <div className="w-10 h-10 md:w-12 md:h-12 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold text-lg md:text-xl shadow-lg shrink-0">
                                     {ticker.substring(0, 2)}

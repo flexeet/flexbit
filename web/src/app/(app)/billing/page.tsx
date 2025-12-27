@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
 import { format } from 'date-fns';
+import { Banknote } from 'lucide-react';
 
 const fetchHistory = async () => {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/history`, {
@@ -54,8 +55,14 @@ export default function BillingHistoryPage() {
     if (isLoading) return <div className="p-10 text-center">Loading...</div>;
 
     return (
-        <div className="max-w-6xl mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-8">Billing History</h1>
+        <div className="space-y-6 font-sans">
+            <div className="mb-6">
+                <h1 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+                    <Banknote className="h-6 w-6 text-primary" />
+                    Billing History
+                </h1>
+                <p className="text-muted-foreground text-sm">Your transaction history</p>
+            </div>
 
             <div className="bg-card border border-border rounded-xl overflow-hidden shadow-sm">
                 <div className="overflow-x-auto">
@@ -100,7 +107,7 @@ export default function BillingHistoryPage() {
                                             {tx.status === 'pending' && (
                                                 <button
                                                     onClick={() => resumePayment(tx.snapToken, tx.orderId)}
-                                                    className="px-3 py-1 rounded bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition-opacity"
+                                                    className="px-3 py-1 cursor-pointer rounded bg-primary text-primary-foreground text-sm font-bold hover:opacity-90 transition-opacity"
                                                 >
                                                     Resume
                                                 </button>

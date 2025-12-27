@@ -3,7 +3,9 @@
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { toast } from 'react-toastify';
+import { useTheme } from 'next-themes';
 
 const TIERS = [
     {
@@ -18,8 +20,8 @@ const TIERS = [
             'Community Access',
             'Diskon V4+ Harga Khusus'
         ],
-        color: 'border-blue-500',
-        btnColor: 'bg-blue-600 hover:bg-blue-700',
+        color: 'border-primary',
+        btnColor: 'bg-primary/90 hover:bg-primary',
         disabled: false
     },
     {
@@ -83,6 +85,7 @@ export default function PricingPage() {
     const { data: user } = useAuth();
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const theme = useTheme();
 
     // Load Midtrans Snap Script
     useEffect(() => {
@@ -121,24 +124,78 @@ export default function PricingPage() {
                     },
                     onError: function (result: any) {
                         console.log('Payment error', result);
-                        alert('Payment failed. Please try again.');
+                        toast.error('Payment failed. Please try again.');
                     },
                     onClose: function () {
                         setLoading(false);
                     }
                 });
             } else {
-                alert('Payment gateway not loaded properly. Please refresh.');
+                toast.error('Payment gateway not loaded properly. Please refresh.', {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    theme: theme.theme == "light" ? "light" : "dark",
+                });
                 setLoading(false);
             }
         },
         onError: () => {
-            alert('Failed to initialize payment.');
+            toast.error('Failed to initialize payment.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme.theme == "light" ? "light" : "dark",
+            });
             setLoading(false);
         }
     });
 
+    // Fetch Payment History to check for pending transactions
+    const { data: history } = useMutation({
+        mutationFn: async () => {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/history`, {
+                credentials: 'include'
+            });
+            if (!res.ok) return [];
+            return res.json();
+        }
+    });
+
+    // Use useQuery instead of useMutation for fetching data
+    const { data: transactions } = useQuery({
+        queryKey: ['billing-history'],
+        queryFn: async () => {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/payment/history`, {
+                credentials: 'include'
+            });
+            if (!res.ok) throw new Error('Failed to fetch history');
+            return res.json();
+        }
+    });
+
+    const pendingTransaction = transactions?.find((tx: any) => tx.status === 'pending');
+
     const handleUpgrade = (tierId: string) => {
+        if (pendingTransaction) {
+            toast.error('You have a pending transaction. Please complete or cancel it in the Billing page before making a new purchase.', {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                theme: theme.theme == "light" ? "light" : "dark",
+            });
+            router.push('/billing');
+            return;
+        }
         setLoading(true);
         purchaseMutation.mutate(tierId);
     };
@@ -146,7 +203,7 @@ export default function PricingPage() {
     return (
         <div className="font-sans max-w-7xl mx-auto py-10 px-4">
             <div className="text-center mb-12">
-                <h1 className="text-4xl font-bold mb-4">Choose Your Plan</h1>
+                <h1 className="text-4xl font-bold mb-4 text-primary">Choose Your Plan</h1>
                 <p className="text-muted-foreground text-lg">Unlock the full potential of FlexBit Pro V3.5</p>
             </div>
 
@@ -178,9 +235,8 @@ export default function PricingPage() {
                         </ul>
 
                         <button
-                            onClick={() => !tier.disabled && handleUpgrade(tier.id)}
-                            disabled={loading || user?.subscription?.tier === tier.id || tier.disabled}
-                            className={`w-full py-3 rounded-lg font-bold text-white transition-opacity ${user?.subscription?.tier === tier.id
+                            onClick={() => handleUpgrade(tier.id)}
+                            className={`w-full py-3 cursor-pointer rounded-lg font-bold text-white transition-opacity ${user?.subscription?.tier === tier.id
                                 ? 'bg-secondary text-muted-foreground cursor-not-allowed'
                                 : loading
                                     ? 'opacity-70 cursor-wait bg-secondary'

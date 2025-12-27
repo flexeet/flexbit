@@ -6,6 +6,7 @@ export interface IStock extends Document {
     sector: string;
     industry?: string;
     logo?: string;
+    stockbit_url?: string;
     isFinancialSector?: boolean;
     financials: {
         per?: number;
@@ -102,6 +103,7 @@ const StockSchema: Schema = new Schema({
     sector: { type: String, required: true },
     industry: String,
     logo: String,
+    stockbit_url: String,
     isFinancialSector: Boolean,
     financials: {
         per: Number,

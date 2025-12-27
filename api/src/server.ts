@@ -21,6 +21,8 @@ import watchlistRoutes from './routes/watchlistRoutes';
 import userRoutes from './routes/userRoutes';
 import paymentRoutes from './routes/paymentRoutes';
 import faqRoutes from './routes/faqRoutes';
+import wikiRoutes from './routes/wikiRoutes';
+import newsRoutes from './routes/newsRoutes';
 import { initMigrationScheduler } from './jobs/migrationScheduler';
 
 // Connect Database then initialize scheduler
@@ -66,6 +68,8 @@ app.use('/api/watchlist', watchlistRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api/faq', faqRoutes);
+app.use('/api/wiki', wikiRoutes);
+app.use('/api/news', newsRoutes);
 
 
 app.listen(PORT, () => {
