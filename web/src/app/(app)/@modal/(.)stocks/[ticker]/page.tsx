@@ -10,7 +10,7 @@ export default function StockDetailModal() {
 
     return (
         <Sheet>
-            <StockDetailContent ticker={ticker} />
+            <StockDetailContent ticker={ticker} isModal={true} />
         </Sheet>
     );
 }

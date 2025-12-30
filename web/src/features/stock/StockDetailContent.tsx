@@ -7,9 +7,11 @@ import Image from 'next/image';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { canAccessStockDetail, canUseWatchlist, getTierLabel } from '@/utils/tierAccess';
 import AddToWatchlistButton from '@/features/stock/AddToWatchlistButton';
+import { LockIcon } from 'lucide-react';
 
 interface StockDetailContentProps {
     ticker: string;
+    isModal?: boolean;
 }
 
 const fetchStock = async (ticker: string) => {
@@ -20,7 +22,7 @@ const fetchStock = async (ticker: string) => {
     return res.json();
 };
 
-export default function StockDetailContent({ ticker }: StockDetailContentProps) {
+export default function StockDetailContent({ ticker, isModal = false }: StockDetailContentProps) {
     const { data: user } = useAuth();
     const router = useRouter();
     const [activeTab, setActiveTab] = useState('Narrative');
@@ -39,19 +41,25 @@ export default function StockDetailContent({ ticker }: StockDetailContentProps) 
     if (!canAccess) {
         return (
             <div className="font-sans max-w-lg mx-auto mt-20 p-8 text-center bg-card border border-border rounded-xl shadow-lg">
-                <div className="text-5xl mb-4">🔒</div>
+                <LockIcon className="text-5xl mb-4 mx-auto text-primary" />
                 <h2 className="text-2xl font-bold mb-2">Access Denied</h2>
                 <p className="text-muted-foreground mb-6">
                     Your current plan ({getTierLabel(user?.subscription?.tier)}) does not include access to detailed stock analysis.
                 </p>
                 <button
-                    onClick={() => router.push('/pricing')}
-                    className="bg-primary text-primary-foreground px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity w-full"
+                    onClick={() => {
+                        if (isModal) {
+                            window.location.href = '/pricing';
+                        } else {
+                            router.push('/pricing');
+                        }
+                    }}
+                    className="bg-primary cursor-pointer text-primary-foreground px-6 py-3 rounded-lg font-bold hover:opacity-90 transition-opacity w-full"
                 >
                     Upgrade Plan
                 </button>
                 <div className="mt-4">
-                    <button onClick={() => router.back()} className="text-sm text-muted-foreground hover:underline">
+                    <button onClick={() => router.back()} className="text-sm text-muted-foreground hover:underline cursor-pointer">
                         Go Back
                     </button>
                 </div>

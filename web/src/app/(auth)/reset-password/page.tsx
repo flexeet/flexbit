@@ -3,6 +3,8 @@
 import { useState, Suspense, FormEvent } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { Spinner } from '@/components/ui/Spinner';
 
 function ResetPasswordForm() {
@@ -145,17 +147,27 @@ function ResetPasswordForm() {
 }
 
 export default function ResetPasswordPage() {
+    const { resolvedTheme } = useTheme();
+
     return (
         <div className="min-h-screen bg-background flex flex-col items-center justify-center p-4">
             {/* Logo */}
-            <Link href="/" className="mb-8 group flex items-center gap-2">
-                <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center text-primary-foreground font-bold text-xl shadow-lg group-hover:scale-105 transition-transform">
-                    F
+            <Link href="/" className="mb-8 group flex items-center gap-1 hover:opacity-90 transition-opacity">
+                <Image
+                    src={resolvedTheme === 'light' ? "/logo_flexbit_light.png" : "/logo_flexbit_dark.png"}
+                    alt="FlexBit Pro"
+                    width={60}
+                    height={60}
+                    className="h-14 w-auto object-contain"
+                    priority
+                />
+                <div className="flex items-center">
+                    <span className="text-3xl font-extrabold bg-gradient-to-r from-[#8B3D88] to-indigo-600 bg-clip-text text-transparent tracking-tight">
+                        FlexBit Pro
+                    </span>
                 </div>
-                <span className="text-2xl font-bold text-foreground">
-                    FlexBit
-                </span>
             </Link>
+
 
             {/* Card */}
             <div className="w-full max-w-md bg-card border border-border rounded-xl p-8 shadow-sm">

@@ -112,7 +112,7 @@ const TopBar = () => {
                     </span>
                     <input
                         type="text"
-                        placeholder="Search stocks (e.g. BBCA, GOTO)..."
+                        placeholder="Search stocks"
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                         onFocus={() => { if (results.length > 0) setShowResults(true); }}
