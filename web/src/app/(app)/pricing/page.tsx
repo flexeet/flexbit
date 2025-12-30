@@ -237,7 +237,7 @@ export default function PricingPage() {
                         <button
                             onClick={() => handleUpgrade(tier.id)}
                             disabled={tier.disabled || loading || user?.subscription?.tier === tier.id}
-                            className={`w-full py-3 cursor-pointer rounded-lg font-bold text-white transition-opacity ${user?.subscription?.tier === tier.id
+                            className={`w-full ${tier.disabled || loading || user?.subscription?.tier === tier.id ? 'cursor-not-allowed' : 'cursor-pointer'} py-3 rounded-lg font-bold text-white transition-opacity ${user?.subscription?.tier === tier.id
                                 ? 'bg-secondary text-muted-foreground cursor-not-allowed'
                                 : loading
                                     ? 'opacity-70 cursor-wait bg-secondary'
