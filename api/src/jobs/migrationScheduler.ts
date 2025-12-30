@@ -16,8 +16,8 @@ import mysql from 'mysql2/promise';
 import Stock from '../models/Stock';
 import { migrateNews } from '../scripts/migrateFromNews';
 
-// Schedule expression: At 19:00 every day (in WIB timezone)
-const CRON_SCHEDULE = '0 19 * * *';
+// Schedule expression: At 20:00 every day (in WIB timezone)
+const CRON_SCHEDULE = '0 20 * * *';
 const TIMEZONE = 'Asia/Jakarta';
 
 let scheduledTask: ReturnType<typeof cron.schedule> | null = null;
@@ -248,7 +248,7 @@ export function initMigrationScheduler() {
     );
 
     console.log('✅ Migration scheduler initialized successfully');
-    console.log(`   Next Stock run: 19:00 WIB`);
+    console.log(`   Next Stock run: 20:00 WIB`);
     console.log(`   Next News run: 09:00 WIB\n`);
 }
 
