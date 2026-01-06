@@ -3,13 +3,8 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IFaq extends Document {
     question: string;
     answer: string;
-    categoryId: number;
-    difficultyLevel: 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED';
-    isPopular: boolean;
-    viewCount: number;
-    helpfulCount: number;
-    tags: string[];
-    displayOrder: number;
+    category: string;
+    note?: string;
     isActive: boolean;
     createdAt: Date;
     updatedAt: Date;
@@ -24,33 +19,23 @@ const FaqSchema = new Schema<IFaq>({
         type: String,
         required: true
     },
-    categoryId: {
-        type: Number,
-        default: 1
-    },
-    difficultyLevel: {
+    category: {
         type: String,
-        enum: ['BEGINNER', 'INTERMEDIATE', 'ADVANCED'],
-        default: 'BEGINNER'
+        required: true,
+        enum: [
+            'BASIC INVESTING',
+            'FUNDAMENTAL ANALYSIS',
+            'NARRATIVE SYSTEM',
+            'PEMBELIAN & AKSES',
+            'SINYAL SINTESIS',
+            'STRATEGI & PSIKOLOGI',
+            'TECHNICAL ANALYSIS',
+            'TENTANG FLEXBIT'
+        ]
     },
-    isPopular: {
-        type: Boolean,
-        default: false
-    },
-    viewCount: {
-        type: Number,
-        default: 0
-    },
-    helpfulCount: {
-        type: Number,
-        default: 0
-    },
-    tags: [{
-        type: String
-    }],
-    displayOrder: {
-        type: Number,
-        default: 1
+    note: {
+        type: String,
+        required: false
     },
     isActive: {
         type: Boolean,
@@ -61,8 +46,7 @@ const FaqSchema = new Schema<IFaq>({
 });
 
 // Index for common queries
-FaqSchema.index({ isActive: 1, displayOrder: 1 });
-FaqSchema.index({ categoryId: 1 });
-FaqSchema.index({ isPopular: -1 });
+FaqSchema.index({ isActive: 1 });
+FaqSchema.index({ category: 1 });
 
 export default mongoose.model<IFaq>('Faq', FaqSchema);

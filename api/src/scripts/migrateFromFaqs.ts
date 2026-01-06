@@ -26,18 +26,11 @@ const mysqlConfig = {
 
 interface MySQLFaqRow {
     id: number;
+    category: string;
     question: string;
     answer: string;
-    category_id: number;
-    difficulty_level: string;
-    is_popular: number;
-    view_count: number;
-    helpful_count: number;
-    tags: string;
-    display_order: number;
+    note: string | null;
     is_active: number;
-    created_at: string;
-    updated_at: string;
 }
 
 const migrateFaqs = async () => {
@@ -56,7 +49,7 @@ const migrateFaqs = async () => {
 
         // Fetch FAQs from MySQL
         console.log('📥 Fetching FAQs from MySQL...');
-        const [rows] = await mysqlConnection.execute('SELECT * FROM wiki_faq WHERE is_active = 1 ORDER BY display_order ASC');
+        const [rows] = await mysqlConnection.execute('SELECT * FROM wiki_faq_news WHERE is_active = 1');
         const faqs = rows as MySQLFaqRow[];
 
         console.log(`📊 Found ${faqs.length} FAQs to migrate`);
@@ -72,13 +65,8 @@ const migrateFaqs = async () => {
             const transformedFaq = {
                 question: faq.question,
                 answer: faq.answer,
-                categoryId: faq.category_id,
-                difficultyLevel: faq.difficulty_level as 'BEGINNER' | 'INTERMEDIATE' | 'ADVANCED',
-                isPopular: faq.is_popular === 1,
-                viewCount: faq.view_count,
-                helpfulCount: faq.helpful_count,
-                tags: faq.tags ? faq.tags.split(',').map(t => t.trim()) : [],
-                displayOrder: faq.display_order,
+                category: faq.category,
+                note: faq.note || undefined, // Convert null to undefined
                 isActive: faq.is_active === 1
             };
 

@@ -2,9 +2,8 @@
  * Migration Scheduler
  * 
  * This file sets up a cron job to run the MySQL to MongoDB migration
- * automatically every day at 19:00 WIB (UTC+7).
+ * automatically every day.
  * 
- * Cron Expression: '0 19 * * *' = At 19:00 every day
  * Timezone: Asia/Jakarta (WIB)
  * 
  * Usage:
@@ -16,11 +15,14 @@ import mysql from 'mysql2/promise';
 import Stock from '../models/Stock';
 import { migrateNews } from '../scripts/migrateFromNews';
 
-// Schedule expression: At 20:00 every day (in WIB timezone)
-const CRON_SCHEDULE = '0 20 * * *';
+// Schedule expression: At 19:00 every day (in WIB timezone)
+const CRON_SCHEDULE_BATCH_1 = '0 19 * * *';
+// Schedule expression: At 20:10 every day (in WIB timezone)
+const CRON_SCHEDULE_BATCH_2 = '10 20 * * *';
 const TIMEZONE = 'Asia/Jakarta';
 
-let scheduledTask: ReturnType<typeof cron.schedule> | null = null;
+// Store all scheduled tasks
+let scheduledTasks: ReturnType<typeof cron.schedule>[] = [];
 
 // MySQL connection config
 const mysqlConfig = {
@@ -199,19 +201,19 @@ async function runMigration() {
  * Should be called after MongoDB is connected in the main server
  */
 export function initMigrationScheduler() {
-    if (scheduledTask) {
+    if (scheduledTasks.length > 0) {
         console.log('⚠️  Migration scheduler already initialized');
         return;
     }
 
     console.log('📅 Initializing migration scheduler...');
 
-    // Existing stock migration (19:00 WIB)
-    scheduledTask = cron.schedule(
-        CRON_SCHEDULE,
+    // Existing stock migration (19:00 WIB) - BATCH 1
+    const task1 = cron.schedule(
+        CRON_SCHEDULE_BATCH_1,
         async () => {
             console.log('\n' + '='.repeat(60));
-            console.log('🕕 SCHEDULED MIGRATION TRIGGERED (STOCKS)');
+            console.log('🕕 SCHEDULED MIGRATION TRIGGERED (STOCKS - BATCH 1)');
             console.log('='.repeat(60));
 
             try {
@@ -225,10 +227,32 @@ export function initMigrationScheduler() {
             timezone: TIMEZONE
         }
     );
+    scheduledTasks.push(task1);
+
+    // Existing stock migration (20:10 WIB) - BATCH 2
+    const task2 = cron.schedule(
+        CRON_SCHEDULE_BATCH_2,
+        async () => {
+            console.log('\n' + '='.repeat(60));
+            console.log('🕕 SCHEDULED MIGRATION TRIGGERED (STOCKS - BATCH 2)');
+            console.log('='.repeat(60));
+
+            try {
+                const result = await runMigration();
+                console.log(`\n✅ Scheduled stock migration completed: ${result.success}/${result.total} stocks updated`);
+            } catch (error) {
+                console.error('\n❌ Scheduled stock migration failed:', error);
+            }
+        },
+        {
+            timezone: TIMEZONE
+        }
+    );
+    scheduledTasks.push(task2);
 
     // News migration (09:00 WIB) - Replaces Wiki automatic schedule
     const NEWS_CRON_SCHEDULE = '0 9 * * *';
-    cron.schedule(
+    const taskNews = cron.schedule(
         NEWS_CRON_SCHEDULE,
         async () => {
             console.log('\n' + '='.repeat(60));
@@ -246,9 +270,11 @@ export function initMigrationScheduler() {
             timezone: TIMEZONE
         }
     );
+    scheduledTasks.push(taskNews);
 
     console.log('✅ Migration scheduler initialized successfully');
-    console.log(`   Next Stock run: 20:00 WIB`);
+    console.log(`   Next Stock Batch 1 run: 19:00 WIB`);
+    console.log(`   Next Stock Batch 2 run: 20:10 WIB`);
     console.log(`   Next News run: 09:00 WIB\n`);
 }
 
@@ -256,9 +282,9 @@ export function initMigrationScheduler() {
  * Stop the migration scheduler
  */
 export function stopMigrationScheduler() {
-    if (scheduledTask) {
-        scheduledTask.stop();
-        scheduledTask = null;
+    if (scheduledTasks.length > 0) {
+        scheduledTasks.forEach(task => task.stop());
+        scheduledTasks = [];
         console.log('🛑 Migration scheduler stopped');
     }
 }
