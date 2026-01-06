@@ -4,6 +4,7 @@ import midtransClient from 'midtrans-client';
 import User, { UserTier } from '../models/User';
 import Transaction from '../models/Transaction';
 import crypto from 'crypto';
+import { createTransactionSchema, manualVerificationSchema } from '../schemas/payment';
 
 // Initialize Snap client
 const snap = new midtransClient.Snap({
@@ -13,24 +14,21 @@ const snap = new midtransClient.Snap({
 
 // Price mapping
 const PRICING = {
-    [UserTier.PIONEER]: 199000, //199000
+    [UserTier.PIONEER]: 199000,
     [UserTier.EARLY_ADOPTER]: 599000,
     [UserTier.GROWTH]: 999000,
     [UserTier.PRO]: 1999000,
     [UserTier.FREE]: 0
 };
-
-// @desc    Create Snap Transaction Token
-// @route   POST /api/payment/transaction
-// @access  Private
 export const createTransaction = async (req: Request, res: Response) => {
     try {
         const user = (req as any).user;
-        const { tier } = req.body;
 
-        if (!tier || !Object.values(UserTier).includes(tier) || tier === UserTier.FREE) {
-            return res.status(400).json({ message: 'Invalid tier selection' });
+        const validation = createTransactionSchema.safeParse(req.body);
+        if (!validation.success) {
+            return res.status(400).json({ message: validation.error.errors[0].message });
         }
+        const { tier } = validation.data;
 
         const price = PRICING[tier as UserTier];
         const orderId = `flxbt-${user._id}-${Date.now()}`;
@@ -53,6 +51,12 @@ export const createTransaction = async (req: Request, res: Response) => {
         };
 
         const transaction = await snap.createTransaction(parameter);
+
+        // INVALIDATE OLD PENDING TRANSACTIONS (Fix for stuck pending issue)
+        await Transaction.updateMany(
+            { user: user._id, status: 'pending' },
+            { status: 'failed' }
+        );
 
         // Save Transaction
         await Transaction.create({
@@ -140,8 +144,11 @@ export const verifyTransaction = async (req: Request, res: Response) => {
             return res.status(403).json({ message: 'Manual verification not available in production' });
         }
 
-        const { orderId } = req.body;
-        if (!orderId) return res.status(400).json({ message: 'Order ID required' });
+        const validation = manualVerificationSchema.safeParse(req.body);
+        if (!validation.success) {
+            return res.status(400).json({ message: validation.error.errors[0].message });
+        }
+        const { orderId } = validation.data;
 
         const statusResponse = await snap.transaction.status(orderId);
         const transactionStatus = statusResponse.transaction_status;

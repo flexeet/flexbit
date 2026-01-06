@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import User from '../models/User';
 import Transaction from '../models/Transaction';
 import Watchlist from '../models/Watchlist';
+import { updateUserSchema } from '../schemas/user';
 
 // @desc    Get users with pagination and search
 // @route   GET /api/users
@@ -47,22 +48,36 @@ export const updateUser = async (req: Request, res: Response) => {
         const user = await User.findById(req.params.id);
 
         if (user) {
-            user.fullName = req.body.fullName || user.fullName;
-            user.email = req.body.email || user.email;
-            user.role = req.body.role || user.role;
+            const validation = updateUserSchema.safeParse(req.body);
+            if (!validation.success) {
+                return res.status(400).json({ message: validation.error.errors[0].message });
+            }
+            const data = validation.data;
 
-            if (req.body.subscription) {
-                user.subscription = {
-                    ...user.subscription,
-                    ...req.body.subscription,
-                };
+            user.fullName = data.fullName ?? user.fullName;
+            user.email = data.email ?? user.email;
+            user.role = data.role ?? user.role;
 
-                // Explicitly handle clearing of expiryDate if null or empty string is passed
-                if (req.body.subscription.expiryDate === null || req.body.subscription.expiryDate === '') {
-                    user.subscription.expiryDate = null;
-                } else if (req.body.subscription.expiryDate) {
-                    user.subscription.expiryDate = req.body.subscription.expiryDate;
+            if (data.subscription) {
+                // Ensure dates are properly converted
+                const newStartDate = data.subscription.startDate
+                    ? new Date(data.subscription.startDate)
+                    : user.subscription.startDate;
+
+                let newExpiryDate = user.subscription.expiryDate;
+                if (data.subscription.expiryDate !== undefined) {
+                    newExpiryDate = data.subscription.expiryDate
+                        ? new Date(data.subscription.expiryDate)
+                        : null;
                 }
+
+                user.subscription = {
+                    tier: data.subscription.tier ?? user.subscription.tier,
+                    status: data.subscription.status ?? user.subscription.status,
+                    startDate: newStartDate,
+                    expiryDate: newExpiryDate,
+                    paymentId: data.subscription.paymentId ?? user.subscription.paymentId
+                };
             }
 
             const updatedUser = await user.save();

@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import nodemailer from 'nodemailer';
 import User, { IUser, UserTier } from '../models/User';
-import { registerSchema, loginSchema, profileSchema, changePasswordSchema } from '../schemas/auth';
+import { registerSchema, loginSchema, profileSchema, changePasswordSchema, forgotPasswordSchema, resetPasswordSchema } from '../schemas/auth';
 
 // Generate JWT Token
 const generateToken = (id: string) => {
@@ -230,7 +230,11 @@ export const updatePassword = async (req: Request, res: Response) => {
 // @access  Public
 export const forgotPassword = async (req: Request, res: Response) => {
     try {
-        const { email } = req.body;
+        const validation = forgotPasswordSchema.safeParse(req.body);
+        if (!validation.success) {
+            return res.status(400).json({ message: validation.error.errors[0].message });
+        }
+        const { email } = validation.data;
 
         const user = await User.findOne({ email });
         if (!user) {
@@ -293,7 +297,11 @@ export const forgotPassword = async (req: Request, res: Response) => {
 // @access  Public
 export const resetPassword = async (req: Request, res: Response) => {
     try {
-        const { token, newPassword } = req.body;
+        const validation = resetPasswordSchema.safeParse(req.body);
+        if (!validation.success) {
+            return res.status(400).json({ message: validation.error.errors[0].message });
+        }
+        const { token, newPassword } = validation.data;
 
         // Hash the token from URL to compare with stored hash
         const resetTokenHash = crypto.createHash('sha256').update(token).digest('hex');

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Spinner } from '@/components/ui/Spinner';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
+import { forgotPasswordSchema } from '@/features/auth/schemas';
 
 export default function ForgotPasswordPage() {
     const [email, setEmail] = useState('');
@@ -18,6 +19,13 @@ export default function ForgotPasswordPage() {
         setLoading(true);
         setError('');
         setSuccess('');
+
+        const validation = forgotPasswordSchema.safeParse({ email });
+        if (!validation.success) {
+            setError(validation.error.errors[0].message);
+            setLoading(false);
+            return;
+        }
 
         try {
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/forgot-password`, {

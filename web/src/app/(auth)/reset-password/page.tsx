@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { Spinner } from '@/components/ui/Spinner';
+import { resetPasswordSchema } from '@/features/auth/schemas';
 
 function ResetPasswordForm() {
     const searchParams = useSearchParams();
@@ -30,8 +31,9 @@ function ResetPasswordForm() {
             return;
         }
 
-        if (newPassword.length < 6) {
-            setError('Password must be at least 6 characters');
+        const validation = resetPasswordSchema.safeParse({ token: token || '', newPassword });
+        if (!validation.success) {
+            setError(validation.error.errors[0].message);
             setLoading(false);
             return;
         }

@@ -180,22 +180,7 @@ export default function PricingPage() {
         }
     });
 
-    const pendingTransaction = transactions?.find((tx: any) => tx.status === 'pending');
-
     const handleUpgrade = (tierId: string) => {
-        if (pendingTransaction) {
-            toast.error('You have a pending transaction. Please complete or cancel it in the Billing page before making a new purchase.', {
-                position: "top-right",
-                autoClose: 3000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                theme: theme.theme == "light" ? "light" : "dark",
-            });
-            router.push('/billing');
-            return;
-        }
         setLoading(true);
         purchaseMutation.mutate(tierId);
     };

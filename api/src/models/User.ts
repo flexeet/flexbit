@@ -50,5 +50,9 @@ const UserSchema: Schema = new Schema({
     resetPasswordExpires: Date,
 }, { timestamps: true });
 
+// Indexes for performance
+UserSchema.index({ fullName: 1 });
+UserSchema.index({ resetPasswordToken: 1 });
+
 export default mongoose.model<IUser>('User', UserSchema);
 
