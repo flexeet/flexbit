@@ -1,7 +1,11 @@
 services:
   flexbit-frontend:
     container_name: flexbit-frontend
-    build: .
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_MIDTRANS_CLIENT_KEY: ${NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
     image: flexbit-frontend:1.0.0
     env_file:
       - .env
