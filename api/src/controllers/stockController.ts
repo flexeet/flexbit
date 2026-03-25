@@ -80,7 +80,7 @@ export const getStocks = async (req: Request, res: Response) => {
 // @access  Public
 export const getStockByTicker = async (req: Request, res: Response) => {
     try {
-        const stock = await Stock.findOne({ ticker: req.params.ticker.toUpperCase() }).lean();
+        const stock = await Stock.findOne({ ticker: (req.params.ticker as string).toUpperCase() }).lean();
 
         if (stock) {
             res.json(stock);
