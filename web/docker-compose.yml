@@ -6,6 +6,9 @@ services:
     env_file:
       - .env
     restart: unless-stopped
+    cpus: 0.5
+    mem_limit: 512m
+    mem_reservation: 256m
     networks:
       - flexeet-network
 

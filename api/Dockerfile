@@ -1,11 +1,13 @@
 # --- BUILD STAGE ---
 FROM node:20-slim AS builder
 
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
 WORKDIR /app
-COPY package*.json tsconfig.json ./
-RUN npm ci
+COPY package.json pnpm-lock.yaml tsconfig.json ./
+RUN pnpm install --frozen-lockfile
 COPY src ./src
-RUN npm run build
+RUN pnpm run build
 
 # --- RUNTIME STAGE ---
 FROM node:20-slim
